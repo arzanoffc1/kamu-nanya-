@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URUNG FIX KIE SERVER RE</title>
+    <style>
+        /* Reset dan gaya dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('background.jpg') no-repeat center center/cover;
+            font-family: Arial, sans-serif;
+        }
+
+        .profile-img {
+            position: absolute;
+            top: 20px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #007bff;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: black;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #007bff;
+            color: #fff;
+            transition: background 0.3s, transform 0.1s ease;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .loader {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .loader div {
+            width: 15px;
+            height: 15px;
+            margin: 0 5px;
+            background-color: #007bff;
+            border-radius: 50%;
+            display: inline-block;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .loader div:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .loader div:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        .description {
+            margin-top: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Foto profil -->
+    <img src="https://a.top4top.io/p_3355zs21s0.jpg" alt="Profil" class="profile-img"> 
+
+    <div class="container">
+        <h1>Urung Fix Kie Server</h1>
+        
+        <div class="button-group">
+            <button id="server1" onclick="checkServer('http://103.31.234.56', 'server1')">SERVER 1</button>
+            <button id="server2" onclick="checkServer('https://103.31.234.56', 'server2')">SERVER 2</button>
+            <button id="server3" onclick="checkServer('https://all-sosmed.arzanoffc.me', 'server3')">uji coba</button>
+        </div>
+
+        <!-- Animasi loading -->
+        <div class="loader" id="loader">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <!-- Area keterangan -->
+        <div class="description">
+            <p>urung fix kie, jejel bae ngesuk siji siji!!</p>
+        </div>
+    </div>
+
+    <script>
+        let controller = null; // Buat simpan controller buat batalin request aktif
+
+        function checkServer(url, buttonId) {
+            if (controller) {
+                controller.abort(); // Batalkan request sebelumnya kalau ada
+            }
+            controller = new AbortController();
+            const signal = controller.signal;
+
+            const loader = document.getElementById('loader');
+            const button1 = document.getElementById('server1');
+            const button2 = document.getElementById('server2');
+            const button3  = document.getElementById('server3');
+
+            // Nonaktifkan tombol pas ngecek dan munculin animasi
+            button1.disabled = true;
+            button2.disabled = true;
+            button3.disabled = true;
+            loader.style.display = 'flex';
+
+            fetch(url, { method: 'HEAD', signal })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = url;
+                    } else {
+                        alert('Server ditemukan, tapi masih ditutup!');
+                    }
+                })
+                .catch(err => {
+                    if (err.name === 'AbortError') {
+                        alert('Pengecekan dibatalkan karena kamu klik server lain!');
+                    } else {
+                        alert('Cek sinyal atau coba lagi nanti!');
+                    }
+                })
+                .finally(() => {
+                    button1.disabled = false;
+                    button2.disabled = false;
+                    button3.disabled = false;
+                    loader.style.display = 'none'; // Sembunyikan loader setelah selesai
+                });
+        }
+    </script>
+
+</body>
+</html>
