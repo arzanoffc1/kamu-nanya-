@@ -166,26 +166,26 @@
             loader.style.display = 'flex';
 
             fetch(url, { method: 'HEAD', signal })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = url;
-                    } else {
-                        alert('Server ditemukan, tapi masih ditutup!');
-                    }
-                })
-                .catch(err => {
-                    if (err.name === 'AbortError') {
-                        alert('Pengecekan dibatalkan karena kamu klik server lain!');
-                    } else {
-                        alert('Cek sinyal atau coba lagi nanti!');
-                    }
-                })
-                .finally(() => {
-                    button1.disabled = false;
-                    button2.disabled = false;
-                    button3.disabled = false;
-                    loader.style.display = 'none'; // Sembunyikan loader setelah selesai
-                });
+    .then(response => {
+        if (response.ok) {
+            window.open(url, '_self'); // Buka halaman tanpa URL bar
+        } else {
+            alert('Server ditemukan, tapi masih ditutup!');
+        }
+    })
+    .catch(err => {
+        if (err.name === 'AbortError') {
+            alert('Pengecekan dibatalkan karena kamu klik server lain!');
+        } else {
+            alert('Cek sinyal atau coba lagi nanti!');
+        }
+    })
+    .finally(() => {
+        button1.disabled = false;
+        button2.disabled = false;
+        button3.disabled = false;
+        loader.style.display = 'none'; // Sembunyikan loader setelah selesai
+    });
         }
     </script>
 
